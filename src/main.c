@@ -24,6 +24,7 @@ int main() {
 
   int i = 0;
   while(1) {
+    // Need to call keyb() even if there is no input because all X11 events i handled there
     keyb(c);
 
     draw_byte((c[0]) ? 0xFF : 0, 63, 3);

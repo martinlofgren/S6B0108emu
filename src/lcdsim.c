@@ -6,7 +6,7 @@ Display *dis;
 int screen;
 Window win;
 GC gc;
-unsigned long black, white; // moved here from init
+unsigned long black, white;
 
 unsigned int win_width, win_height, lcd_left, lcd_top, lcd_width, lcd_height, lcd_padding;
 
@@ -135,13 +135,12 @@ void redraw() {
 }
 
 void lcdsim_write_command(const uint8_t cmd, const uint8_t controller) {
+  uint8_t cs;
   if (controller & B_CS1)
-    handle_command(cmd, 0);
-  if (controller & B_CS2)
-    handle_command(cmd, 1);
-}
-
-void handle_command(const uint8_t cmd, uint8_t cs) {
+    cs = 0;
+  else if (controller & B_CS2)
+    cs = 1;
+  else return;
   if (cmd & LCD_SET_ADD)
     cur_adr[cs] = cmd & 0x3F;
   else if (cmd & LCD_SET_PAGE)

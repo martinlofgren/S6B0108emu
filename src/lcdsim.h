@@ -31,6 +31,5 @@ int keysym_to_arrow_key(KeySym keysym);
 void redraw();
 void draw_byte(uint8_t byte, uint8_t adr, uint8_t page);
 void draw_buffers();
-void handle_command(const uint8_t cmd, uint8_t cs);
 
 #endif // S6B0108EMU_LCDSIM_H
