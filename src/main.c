@@ -1,11 +1,11 @@
 /*
  * S6B0108 Emulator
  *
- * Must call keyb(char* c) in the main loop, because this function handles all X11 events, including redraw
- * of windows.
+ * Must call keyb(char* c) in the main loop, because this function handles all
+ * X11 events, including redraw of windows.
  */
 
-// Define to get substitutions of function names, see main.h for details.
+// Define this to get substitutions of function names, see main.h for details.
 #define SIMULATOR
 
 #include "main.h"
@@ -16,7 +16,8 @@
 
 // Example main function and loop
 int main() {
-  // Initialize the display with pixel size, pixel padding (not implemented yet)
+  // Initialize the display with (pixel size, pixel padding) (pixel padding not
+  // implemented yet)
   lcdsim_init(3, 0);
   
   // Character array containing the keypresses
@@ -24,7 +25,6 @@ int main() {
 
   int i = 0;
   while(1) {
-    // Need to call keyb() even if there is no input because all X11 events i handled there
     keyb(c);
 
     draw_byte((c[0]) ? 0xFF : 0, 63, 3);

@@ -174,3 +174,4 @@ void lcdsim_delay_milli(int ms) {
   unsigned int us = ms * 1000;
   usleep(us);
 }
+
