@@ -8,11 +8,12 @@ Window win;
 GC gc;
 unsigned long black, white;
 
-unsigned int win_width, win_height, lcd_left, lcd_top, lcd_width, lcd_height, lcd_padding;
-
 /*LCDSIM vars */
+static unsigned int win_width, win_height, lcd_left, lcd_top, lcd_width, lcd_height, lcd_padding, ascii_top;
 static uint8_t buf[1024], cur_adr[2], cur_page[2];
 static uint8_t lcd_pixel_size;
+static char ascii_buf0[20], ascii_buf1[20];
+static uint8_t ascii_pos = 0;
 
 void lcdsim_init(const uint8_t pixel_size, const uint8_t padding) {
   // X initialization
@@ -36,6 +37,12 @@ void lcdsim_init(const uint8_t pixel_size, const uint8_t padding) {
   int i;
   for (i = 0; i < 1024; i++) {
     buf[i] = 0;
+  }
+
+  // Initialize text buffer
+  for (i = 0; i < 20; i++) {
+    ascii_buf0[i] = ' ';
+    ascii_buf1[i] = ' ';
   }
 }
 
@@ -90,6 +97,19 @@ void lcdsim_keyb (char *c) {
   }
 }
 
+void lcdsim_ascii_write_char(unsigned char c) {
+  if (ascii_pos < 20)
+    ascii_buf0[ascii_pos++] = c;
+  else
+    ascii_buf1[ascii_pos++ - 20] = c;
+  draw_ascii();
+}
+
+void lcdsim_ascii_gotoxy(int x, int y) {
+  if (x >= 0 && x <= 19 && y >= 0 && y <= 1)
+    ascii_pos = x + 20 * y;
+}
+
 void draw_byte(uint8_t byte, uint8_t adr, uint8_t page) {
   int i, j, k, x, y;
   for (i = 0; i < 8; i++) {
@@ -111,6 +131,20 @@ void draw_buffers() {
   }
 }
 
+void draw_ascii() {
+  XSetForeground(dis, gc, white); // replace with macros
+  XFillRectangle(dis, win, gc, lcd_left, ascii_top, lcd_width, lcd_pixel_size * 20 - 1);
+  XSetForeground(dis, gc, black); // replace with macros
+  int i, x, y, dy;
+  for (i = 0; i < 20; i++) {
+    x = lcd_left + (i + 1) * lcd_width / 22;
+    dy = lcd_pixel_size * 7;
+    y = ascii_top + dy;
+    XDrawString(dis, win, gc, x, y, ascii_buf0 + i, 1);
+    XDrawString(dis, win, gc, x, y + dy, ascii_buf1 +i, 1);
+  }
+}
+
 int keysym_to_arrow_key(KeySym keysym) {
   switch(keysym) {
   case XK_Up:    return 0;
@@ -128,10 +162,13 @@ void redraw() {
   XGetGeometry(dis, win, &root, &x, &y, &win_width, &win_height, &border_width, &depth);
   lcd_left = (win_width -  lcd_width)  / 2;
   lcd_top =  (win_height - lcd_height) / 2;
+  ascii_top = lcd_top + lcd_height + 10;
   draw_buffers();
+  draw_ascii();
 
   XSetForeground(dis, gc, black); // replace with macro
   XDrawRectangle(dis, win, gc, lcd_left - 1, lcd_top - 1, lcd_width + 1, lcd_height + 1);
+  XDrawRectangle(dis, win, gc, lcd_left - 1, ascii_top -1, lcd_width + 1, lcd_pixel_size * 20);
 }
 
 void lcdsim_write_command(const uint8_t cmd, const uint8_t controller) {

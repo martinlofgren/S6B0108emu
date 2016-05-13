@@ -1,7 +1,8 @@
-Emulator for the S6B0108 LCD display.
+#Emulator for the S6B0108 LCD display.
 
 Implements basic functionality to write commands and data to the screen and
-to read from it. Also implements basic inpus (cursor keys).
+to read from it. Also implements an ascii-display, basic input (cursor keys)
+and delay functions.
 
 Build with make. Run under X11, so these are the required libraries.
 

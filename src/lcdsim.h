@@ -26,10 +26,13 @@ void lcdsim_write_command(const uint8_t cmd, const uint8_t controller);
 void lcdsim_write_data(const uint8_t data, const uint8_t controller);
 uint8_t lcdsim_read(const uint8_t controller);
 void lcdsim_delay_milli(int ms);
+void lcdsim_ascii_write_char(unsigned char c);
+void lcdsim_ascii_gotoxy(int x, int y);
 
 int keysym_to_arrow_key(KeySym keysym);
 void redraw();
 void draw_byte(uint8_t byte, uint8_t adr, uint8_t page);
 void draw_buffers();
+void draw_ascii();
 
 #endif // S6B0108EMU_LCDSIM_H
