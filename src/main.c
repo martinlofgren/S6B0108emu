@@ -40,9 +40,9 @@ int main() {
 
     // Show pressed down key
     draw_byte((c[0]) ? 0xFF : 0, 63, 3);
-    draw_byte((c[1]) ? 0xFF : 0, 63, 4);
-    draw_byte((c[2]) ? 0xFF : 0, 61, 4);
-    draw_byte((c[3]) ? 0xFF : 0, 65, 4);
+    draw_byte((c[1]) ? 0xFF : 0, 63, 5);
+    draw_byte((c[2]) ? 0xFF : 0, 58, 4);
+    draw_byte((c[3]) ? 0xFF : 0, 68, 4);
 
     // Moving byte
     draw_byte(0, (i % 128), 7);

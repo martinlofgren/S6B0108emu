@@ -24,7 +24,7 @@ void lcdsim_init(const uint8_t pixel_size, const uint8_t padding) {
   dis = XOpenDisplay((char *)0);
   screen = DefaultScreen(dis);
   black = BlackPixel(dis, screen), white = WhitePixel(dis, screen);
-  win = XCreateSimpleWindow(dis, DefaultRootWindow(dis), 0, 0, lcd_width, lcd_height, 5, black, white);
+  win = XCreateSimpleWindow(dis, DefaultRootWindow(dis), 0, 0, lcd_width, lcd_height + 10 + lcd_pixel_size * 20, 5, black, white);
   XSetStandardProperties(dis, win, "LCD Simulator", "LCDSim", None, NULL, 0, NULL);
   XSelectInput(dis, win, ExposureMask | KeyPressMask | KeyReleaseMask);
   gc = XCreateGC(dis, win, 0,0);        
@@ -166,6 +166,7 @@ void redraw() {
   draw_buffers();
   draw_ascii();
 
+   
   XSetForeground(dis, gc, black); // replace with macro
   XDrawRectangle(dis, win, gc, lcd_left - 1, lcd_top - 1, lcd_width + 1, lcd_height + 1);
   XDrawRectangle(dis, win, gc, lcd_left - 1, ascii_top -1, lcd_width + 1, lcd_pixel_size * 20);
