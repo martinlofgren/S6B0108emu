@@ -1,4 +1,4 @@
-##S6B0108 emulator
+## S6B0108 emulator
 
 Implements basic functionality to write commands and data to the S6B0108 LCD display, and to read from it. Also implements a few high level functions for an 2x20 ascii display (S6A0069), basic input (cursor keys) and delay functions.
 
